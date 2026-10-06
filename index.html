@@ -1,0 +1,2854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cosmos Explorer | Solar System</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(60,80,150,.25), transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(120,50,160,.2), transparent 25%),
+        #030611;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* =========================
+   STAR BACKGROUND
+========================= */
+
+.stars,
+.stars2,
+.stars3 {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.stars {
+    background-image:
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(1px 1px at 100px 150px, white, transparent),
+        radial-gradient(2px 2px at 200px 80px, white, transparent),
+        radial-gradient(1px 1px at 300px 200px, white, transparent),
+        radial-gradient(2px 2px at 400px 100px, white, transparent),
+        radial-gradient(1px 1px at 500px 300px, white, transparent),
+        radial-gradient(2px 2px at 700px 50px, white, transparent),
+        radial-gradient(1px 1px at 900px 250px, white, transparent);
+    background-size: 1000px 500px;
+    animation: moveStars 80s linear infinite;
+}
+
+.stars2 {
+    opacity: .5;
+    background-image:
+        radial-gradient(1px 1px at 40px 100px, white, transparent),
+        radial-gradient(2px 2px at 300px 350px, white, transparent),
+        radial-gradient(1px 1px at 600px 200px, white, transparent),
+        radial-gradient(2px 2px at 900px 400px, white, transparent);
+    background-size: 1200px 600px;
+    animation: moveStars 130s linear infinite reverse;
+}
+
+.stars3 {
+    opacity: .25;
+    background-image:
+        radial-gradient(1px 1px at 150px 250px, white, transparent),
+        radial-gradient(1px 1px at 450px 50px, white, transparent),
+        radial-gradient(1px 1px at 800px 300px, white, transparent);
+    background-size: 1000px 500px;
+}
+
+@keyframes moveStars {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-500px);
+    }
+}
+
+/* =========================
+   HERO
+========================= */
+
+header {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    position: relative;
+}
+
+.hero {
+    max-width: 1000px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 8px 18px;
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 30px;
+    background: rgba(255,255,255,.06);
+    backdrop-filter: blur(10px);
+    margin-bottom: 25px;
+    color: #b9caff;
+}
+
+h1 {
+    font-size: clamp(50px, 9vw, 110px);
+    line-height: .95;
+    background: linear-gradient(90deg, #ffffff, #8db7ff, #d69cff);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 25px;
+}
+
+.hero p {
+    color: #b8bfd3;
+    font-size: 20px;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: auto;
+}
+
+.credit {
+    margin-top: 30px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.credit strong {
+    color: #8db7ff;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 35px;
+    padding: 15px 30px;
+    border-radius: 50px;
+    background: linear-gradient(90deg, #476cff, #9c5cff);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 0 30px rgba(100,100,255,.35);
+    transition: .3s;
+}
+
+.btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 50px rgba(100,100,255,.6);
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 15px;
+    text-align: center;
+    background: rgba(3,6,17,.85);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+nav a {
+    color: #ccd4eb;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 14px;
+    transition: .2s;
+}
+
+nav a:hover {
+    color: white;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+section {
+    max-width: 1250px;
+    margin: auto;
+    padding: 100px 25px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #9ba5bd;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    line-height: 1.7;
+}
+
+/* =========================
+   SOLAR SYSTEM
+========================= */
+
+.system-container {
+    overflow-x: auto;
+    padding: 70px 20px;
+}
+
+.orbit-system {
+    min-width: 1100px;
+    height: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sun {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff7a0, #ffb300, #ff5e00);
+    box-shadow:
+        0 0 40px #ffb300,
+        0 0 100px #ff6b00,
+        0 0 170px rgba(255,130,0,.4);
+    z-index: 5;
+}
+
+.orbit {
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 50%;
+}
+
+.o1 { width: 160px; height: 160px; }
+.o2 { width: 230px; height: 230px; }
+.o3 { width: 310px; height: 310px; }
+.o4 { width: 390px; height: 390px; }
+.o5 { width: 490px; height: 490px; }
+.o6 { width: 610px; height: 610px; }
+.o7 { width: 750px; height: 750px; }
+.o8 { width: 900px; height: 900px; }
+
+.planet-dot {
+    position: absolute;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.planet-dot:hover {
+    transform: scale(1.5);
+}
+
+.mercury-dot {
+    width: 10px;
+    height: 10px;
+    background: #9a9a9a;
+    animation: orbit1 6s linear infinite;
+}
+
+.venus-dot {
+    width: 14px;
+    height: 14px;
+    background: #d8a15c;
+    animation: orbit2 9s linear infinite;
+}
+
+.earth-dot {
+    width: 16px;
+    height: 16px;
+    background: #438cff;
+    animation: orbit3 12s linear infinite;
+}
+
+.mars-dot {
+    width: 13px;
+    height: 13px;
+    background: #c84d36;
+    animation: orbit4 15s linear infinite;
+}
+
+.jupiter-dot {
+    width: 29px;
+    height: 29px;
+    background: #c89a6d;
+    animation: orbit5 20s linear infinite;
+}
+
+.saturn-dot {
+    width: 26px;
+    height: 26px;
+    background: #d6bc80;
+    animation: orbit6 25s linear infinite;
+}
+
+.uranus-dot {
+    width: 21px;
+    height: 21px;
+    background: #8ddde0;
+    animation: orbit7 30s linear infinite;
+}
+
+.neptune-dot {
+    width: 21px;
+    height: 21px;
+    background: #4169e1;
+    animation: orbit8 35s linear infinite;
+}
+
+@keyframes orbit1 {
+    from {
+        transform: rotate(0deg) translateX(80px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(80px) rotate(-360deg);
+    }
+}
+
+@keyframes orbit2 {
+    from {
+        transform: rotate(0deg) translateX(115px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(115px) rotate(-360deg);
+    }
+}
+
+@keyframes orbit3 {
+    from {
+        transform: rotate(0deg) translateX(155px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(155px) rotate(-360deg);
+    }
+}
+
+@keyframes orbit4 {
+    from {
+        transform: rotate(0deg) translateX(195px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(195px) rotate(-360deg);
+    }
+}
+
+@keyframes orbit5 {
+    from {
+        transform: rotate(0deg) translateX(245px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(245px) rotate(-360deg);
+    }
+}
+
+@keyframes orbit6 {
+    from {
+        transform: rotate(0deg) translateX(305px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(305px) rotate(-360deg);
+    }
+}
+
+@keyframes orbit7 {
+    from {
+        transform: rotate(0deg) translateX(375px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(375px) rotate(-360deg);
+    }
+}
+
+@keyframes orbit8 {
+    from {
+        transform: rotate(0deg) translateX(450px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(450px) rotate(-360deg);
+    }
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box {
+    max-width: 700px;
+    margin: 0 auto 40px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 18px 25px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.06);
+    color: white;
+    font-size: 17px;
+    outline: none;
+}
+
+.search-box input::placeholder {
+    color: #8d96aa;
+}
+
+/* =========================
+   PLANET CARDS
+========================= */
+
+.planet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 25px;
+    padding: 28px;
+    backdrop-filter: blur(12px);
+    transition: .3s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    background: rgba(255,255,255,.09);
+    border-color: rgba(140,170,255,.4);
+}
+
+.planet-visual {
+    width: 100px;
+    height: 100px;
+    margin: 10px auto 25px;
+    border-radius: 50%;
+    box-shadow:
+        inset -15px -15px 25px rgba(0,0,0,.35),
+        0 0 30px rgba(255,255,255,.08);
+}
+
+.mercury {
+    background: #8f8f8f;
+}
+
+.venus {
+    background: #d49b52;
+}
+
+.earth {
+    background: radial-gradient(
+        circle at 35% 35%,
+        #64a6ff,
+        #1955a0,
+        #143050
+    );
+}
+
+.mars {
+    background: #bd4d35;
+}
+
+.jupiter {
+    background: repeating-linear-gradient(
+        0deg,
+        #c99c72,
+        #c99c72 10px,
+        #e1c19b 10px,
+        #e1c19b 18px,
+        #9e704d 18px,
+        #9e704d 25px
+    );
+}
+
+.saturn {
+    background: #d2b87a;
+    position: relative;
+}
+
+.saturn::after {
+    content: "";
+    position: absolute;
+    width: 145px;
+    height: 35px;
+    border: 7px solid rgba(220,200,150,.7);
+    border-radius: 50%;
+    left: -22px;
+    top: 32px;
+    transform: rotate(-15deg);
+}
+
+.uranus {
+    background: #83d8dc;
+}
+
+.neptune {
+    background: #3d65d5;
+}
+
+.card h3 {
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #aab3c8;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.card .read {
+    display: inline-block;
+    margin-top: 18px;
+    color: #8fb3ff;
+    font-size: 14px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.8);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    width: min(900px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #0a0f22;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 30px;
+    padding: 40px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #aab3c8;
+}
+
+.modal h2 {
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.modal p {
+    color: #b4bdd0;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+}
+
+.info-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.info-table td:first-child {
+    color: #8eaaff;
+    font-weight: bold;
+    width: 40%;
+}
+
+/* =========================
+   DISTANCE TABLE
+========================= */
+
+.table-container {
+    overflow-x: auto;
+}
+
+.distance-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,.04);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.distance-table th,
+.distance-table td {
+    padding: 18px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    text-align: left;
+}
+
+.distance-table th {
+    background: rgba(90,120,255,.15);
+    color: #bcd0ff;
+}
+
+.distance-table td {
+    color: #c0c7d8;
+}
+
+/* =========================
+   EVENTS
+========================= */
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.event {
+    padding: 25px;
+    background: rgba(255,255,255,.05);
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.1);
+    transition: .3s;
+}
+
+.event:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,.08);
+}
+
+.event-date {
+    color: #9db9ff;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.event h3 {
+    margin-bottom: 12px;
+}
+
+.event p {
+    color: #aab3c7;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.tag {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(120,140,255,.15);
+    color: #a9beff;
+    font-size: 12px;
+}
+
+/* =========================
+   VISIBILITY
+========================= */
+
+.visibility-intro {
+    padding: 30px;
+    margin-bottom: 40px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 25px;
+}
+
+.visibility-intro p {
+    color: #b4bdd0;
+    line-height: 1.8;
+}
+
+.visibility-card strong {
+    color: #dce4ff;
+}
+
+.visibility-table-container {
+    overflow-x: auto;
+    margin-top: 45px;
+}
+
+.visibility-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    background: rgba(255,255,255,.04);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.visibility-table th,
+.visibility-table td {
+    padding: 14px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.visibility-table th {
+    background: rgba(90,120,255,.15);
+    color: #c7d5ff;
+}
+
+.visibility-table td {
+    color: #b7c0d2;
+}
+
+.visibility-table td:first-child {
+    text-align: left;
+    font-weight: bold;
+    color: white;
+}
+
+.morning {
+    color: #ffd58a !important;
+}
+
+.evening {
+    color: #ffad7a !important;
+}
+
+.night {
+    color: #9fbdff !important;
+}
+
+.good {
+    color: #8ff0c2 !important;
+}
+
+/* =========================
+   GALAXY
+========================= */
+
+.galaxy-box {
+    min-height: 450px;
+    border-radius: 30px;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255,255,255,.8) 0%,
+            rgba(190,180,255,.5) 8%,
+            rgba(90,80,160,.25) 25%,
+            transparent 60%
+        ),
+        radial-gradient(
+            circle at 30% 40%,
+            rgba(100,140,255,.2),
+            transparent 25%
+        ),
+        #050712;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.galaxy-text {
+    max-width: 700px;
+    z-index: 2;
+}
+
+.galaxy-text h3 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.galaxy-text p {
+    color: #bbc3d5;
+    line-height: 1.8;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    text-align: center;
+    padding: 60px 20px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    color: #858ea4;
+}
+
+footer strong {
+    color: #a9bdff;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 700px) {
+
+    nav {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    nav a {
+        margin: 0 5px;
+        font-size: 11px;
+    }
+
+    section {
+        padding: 70px 18px;
+    }
+
+    .section-title {
+        font-size: 35px;
+    }
+
+    .modal-content {
+        padding: 25px;
+    }
+
+    .modal h2 {
+        font-size: 35px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header>
+
+<div class="hero">
+
+    <div class="badge">
+        🌌 AN INTERACTIVE ASTRONOMY PROJECT
+    </div>
+
+    <h1>
+        COSMOS<br>EXPLORER
+    </h1>
+
+    <p>
+        Explore the Sun, planets, planetary distances,
+        astronomical events and discover when and where
+        the planets can be seen from Earth.
+    </p>
+
+    <div class="credit">
+        Created by <strong>Ankush & Abhigyan</strong>
+    </div>
+
+    <a href="#planets" class="btn">
+        Explore the Solar System ↓
+    </a>
+
+</div>
+
+</header>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+<a href="#system">Solar System</a>
+<a href="#planets">Planets</a>
+<a href="#distances">Distances</a>
+<a href="#events">Events</a>
+<a href="#visibility">Planet Visibility</a>
+<a href="#milkyway">Milky Way</a>
+
+</nav>
+
+
+<!-- =========================
+     SOLAR SYSTEM
+========================= -->
+
+<section id="system">
+
+<h2 class="section-title">
+    Our Solar System
+</h2>
+
+<p class="section-subtitle">
+
+The Solar System consists of the Sun, eight planets,
+dwarf planets, moons, asteroids, comets and countless
+smaller objects. It is located inside the Orion Arm
+of the Milky Way galaxy.
+
+</p>
+
+<div class="system-container">
+
+<div class="orbit-system">
+
+    <div class="sun" title="The Sun"></div>
+
+    <div class="orbit o1"></div>
+    <div class="orbit o2"></div>
+    <div class="orbit o3"></div>
+    <div class="orbit o4"></div>
+    <div class="orbit o5"></div>
+    <div class="orbit o6"></div>
+    <div class="orbit o7"></div>
+    <div class="orbit o8"></div>
+
+    <div class="planet-dot mercury-dot"></div>
+    <div class="planet-dot venus-dot"></div>
+    <div class="planet-dot earth-dot"></div>
+    <div class="planet-dot mars-dot"></div>
+    <div class="planet-dot jupiter-dot"></div>
+    <div class="planet-dot saturn-dot"></div>
+    <div class="planet-dot uranus-dot"></div>
+    <div class="planet-dot neptune-dot"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PLANETS
+========================= -->
+
+<section id="planets">
+
+<h2 class="section-title">
+    The Sun & Eight Planets
+</h2>
+
+<p class="section-subtitle">
+
+Click any object to open a detailed scientific profile.
+
+</p>
+
+<div class="search-box">
+
+<input
+    type="text"
+    id="search"
+    placeholder="🔎 Search Mercury, Earth, Jupiter..."
+>
+
+</div>
+
+<div class="planet-grid" id="planetGrid">
+
+
+<!-- SUN -->
+
+<div class="card"
+     data-name="sun"
+     onclick="openPlanet('Sun')">
+
+<div class="planet-visual"
+style="
+background:
+radial-gradient(
+circle at 35% 30%,
+#fff7a0,
+#ffb300,
+#ff5e00
+);
+">
+</div>
+
+<h3>☀️ Sun</h3>
+
+<p>
+
+The Sun is the star at the center of our Solar System.
+It provides almost all of the energy that drives Earth's
+climate and supports life.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- MERCURY -->
+
+<div class="card"
+     data-name="mercury"
+     onclick="openPlanet('Mercury')">
+
+<div class="planet-visual mercury"></div>
+
+<h3>Mercury</h3>
+
+<p>
+
+The smallest planet and the closest planet to the Sun.
+It has a heavily cratered surface and an extremely thin
+exosphere.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- VENUS -->
+
+<div class="card"
+     data-name="venus"
+     onclick="openPlanet('Venus')">
+
+<div class="planet-visual venus"></div>
+
+<h3>Venus</h3>
+
+<p>
+
+A rocky planet with a thick carbon-dioxide atmosphere.
+Its surface is hotter than that of any other planet.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- EARTH -->
+
+<div class="card"
+     data-name="earth"
+     onclick="openPlanet('Earth')">
+
+<div class="planet-visual earth"></div>
+
+<h3>Earth</h3>
+
+<p>
+
+Our home planet, covered by oceans and protected by an
+atmosphere containing nitrogen, oxygen and other gases.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- MARS -->
+
+<div class="card"
+     data-name="mars"
+     onclick="openPlanet('Mars')">
+
+<div class="planet-visual mars"></div>
+
+<h3>Mars</h3>
+
+<p>
+
+The Red Planet, with a thin atmosphere, polar ice caps,
+ancient valleys and the enormous volcano Olympus Mons.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- JUPITER -->
+
+<div class="card"
+     data-name="jupiter"
+     onclick="openPlanet('Jupiter')">
+
+<div class="planet-visual jupiter"></div>
+
+<h3>Jupiter</h3>
+
+<p>
+
+The largest planet in the Solar System and a gas giant
+with a powerful magnetic field and many known moons.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- SATURN -->
+
+<div class="card"
+     data-name="saturn"
+     onclick="openPlanet('Saturn')">
+
+<div class="planet-visual saturn"></div>
+
+<h3>Saturn</h3>
+
+<p>
+
+A gas giant famous for its spectacular system of
+icy and rocky rings.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- URANUS -->
+
+<div class="card"
+     data-name="uranus"
+     onclick="openPlanet('Uranus')">
+
+<div class="planet-visual uranus"></div>
+
+<h3>Uranus</h3>
+
+<p>
+
+An ice giant with a blue-green appearance and an unusual
+rotation where its axis is strongly tilted.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+
+<!-- NEPTUNE -->
+
+<div class="card"
+     data-name="neptune"
+     onclick="openPlanet('Neptune')">
+
+<div class="planet-visual neptune"></div>
+
+<h3>Neptune</h3>
+
+<p>
+
+The farthest major planet from the Sun and an extremely
+cold and windy ice giant.
+
+</p>
+
+<span class="read">
+View full details →
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     DISTANCES
+========================= -->
+
+<section id="distances">
+
+<h2 class="section-title">
+    🌍 Earth & Planetary Distances
+</h2>
+
+<p class="section-subtitle">
+
+Planetary distances change continuously as planets orbit
+the Sun. The values below are approximate average
+Earth-to-object separations and average orbital distances.
+
+</p>
+
+<div class="table-container">
+
+<table class="distance-table">
+
+<thead>
+
+<tr>
+
+<th>Object</th>
+<th>Approx. Earth Separation</th>
+<th>Average Distance From Sun</th>
+<th>Approx. Light Travel Time</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>☀️ Sun</td>
+<td>149.6 million km</td>
+<td>149.6 million km from Earth</td>
+<td>8 min 20 sec</td>
+
+</tr>
+
+<tr>
+
+<td>☿ Mercury</td>
+<td>≈ 91.7 million km*</td>
+<td>≈ 58 million km</td>
+<td>≈ 3.2 min from Sun</td>
+
+</tr>
+
+<tr>
+
+<td>♀ Venus</td>
+<td>≈ 41.4 million km*</td>
+<td>≈ 108 million km</td>
+<td>≈ 6 min from Sun</td>
+
+</tr>
+
+<tr>
+
+<td>🌍 Earth</td>
+<td>0 km</td>
+<td>≈ 149.6 million km</td>
+<td>8 min 20 sec from Sun</td>
+
+</tr>
+
+<tr>
+
+<td>♂ Mars</td>
+<td>≈ 78.3 million km*</td>
+<td>≈ 227.9 million km</td>
+<td>≈ 12.7 min from Sun</td>
+
+</tr>
+
+<tr>
+
+<td>♃ Jupiter</td>
+<td>≈ 628.3 million km*</td>
+<td>≈ 778 million km</td>
+<td>≈ 43 min from Sun</td>
+
+</tr>
+
+<tr>
+
+<td>♄ Saturn</td>
+<td>≈ 1.28 billion km*</td>
+<td>≈ 1.4 billion km</td>
+<td>≈ 79 min from Sun</td>
+
+</tr>
+
+<tr>
+
+<td>♅ Uranus</td>
+<td>≈ 2.72 billion km*</td>
+<td>≈ 2.9 billion km</td>
+<td>≈ 160 min from Sun</td>
+
+</tr>
+
+<tr>
+
+<td>♆ Neptune</td>
+<td>≈ 4.35 billion km*</td>
+<td>≈ 4.5 billion km</td>
+<td>≈ 250 min from Sun</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<p style="
+color:#7f899f;
+margin-top:20px;
+line-height:1.6;
+font-size:13px;
+">
+
+*These are simplified approximate values. Actual Earth-to-planet
+distance changes continuously because both Earth and the planet
+are moving in their orbits.
+
+</p>
+
+</section>
+
+
+<!-- =========================
+     2026 EVENTS
+========================= -->
+
+<section id="events">
+
+<h2 class="section-title">
+    🔭 Sky Events Visible From Earth — 2026
+</h2>
+
+<p class="section-subtitle">
+
+Major astronomical events that can be observed from Earth.
+Exact visibility depends on your location, local time,
+weather and whether the event is above your horizon.
+
+</p>
+
+<div class="events-grid">
+
+
+<div class="event">
+
+<div class="event-date">
+January 3–4, 2026
+</div>
+
+<h3>
+☄️ Quadrantid Meteor Shower
+</h3>
+
+<p>
+
+One of the first major meteor showers of the year.
+The peak occurs around January 3–4.
+
+</p>
+
+<span class="tag">
+METEOR SHOWER
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+January 10, 2026
+</div>
+
+<h3>
+♃ Jupiter at Opposition
+</h3>
+
+<p>
+
+Jupiter reaches opposition, placing it opposite the Sun
+in Earth's sky and making it especially favorable for
+observation.
+
+</p>
+
+<span class="tag">
+PLANET
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+February 17, 2026
+</div>
+
+<h3>
+🌑 Annular Solar Eclipse
+</h3>
+
+<p>
+
+An annular solar eclipse occurs. Visibility is concentrated
+in specific regions of Earth.
+
+</p>
+
+<span class="tag">
+ECLIPSE
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+March 3, 2026
+</div>
+
+<h3>
+🌕 Total Lunar Eclipse
+</h3>
+
+<p>
+
+A total lunar eclipse occurs. Parts of India can observe
+the eclipse, although visibility varies by location.
+
+</p>
+
+<span class="tag">
+ECLIPSE
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+April 22–23, 2026
+</div>
+
+<h3>
+☄️ Lyrid Meteor Shower
+</h3>
+
+<p>
+
+The Lyrids reach their annual peak around April 22–23.
+Dark skies provide the best viewing conditions.
+
+</p>
+
+<span class="tag">
+METEOR SHOWER
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+May 5–6, 2026
+</div>
+
+<h3>
+☄️ Eta Aquariid Meteor Shower
+</h3>
+
+<p>
+
+The Eta Aquariids are associated with material left
+behind by Halley's Comet.
+
+</p>
+
+<span class="tag">
+METEOR SHOWER
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+August 12, 2026
+</div>
+
+<h3>
+🌑 Total Solar Eclipse
+</h3>
+
+<p>
+
+A total solar eclipse occurs on August 12, 2026.
+Its path of totality crosses parts of the northern
+hemisphere.
+
+</p>
+
+<span class="tag">
+ECLIPSE
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+August 12–13, 2026
+</div>
+
+<h3>
+☄️ Perseid Meteor Shower
+</h3>
+
+<p>
+
+The Perseids peak around August 12–13 and are one of
+the most famous annual meteor showers.
+
+</p>
+
+<span class="tag">
+METEOR SHOWER
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+August 27–28, 2026
+</div>
+
+<h3>
+🌕 Partial Lunar Eclipse
+</h3>
+
+<p>
+
+A partial lunar eclipse occurs and is visible from
+parts of the nighttime side of Earth.
+
+</p>
+
+<span class="tag">
+ECLIPSE
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+September 25, 2026
+</div>
+
+<h3>
+♆ Neptune at Opposition
+</h3>
+
+<p>
+
+Neptune reaches opposition, giving observers a favorable
+period for telescopic observation.
+
+</p>
+
+<span class="tag">
+PLANET
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+October 4, 2026
+</div>
+
+<h3>
+♄ Saturn at Opposition
+</h3>
+
+<p>
+
+Saturn reaches opposition and becomes especially well
+placed for observation.
+
+</p>
+
+<span class="tag">
+PLANET
+</span>
+
+</div>
+
+
+<div class="event">
+
+<div class="event-date">
+November 25, 2026
+</div>
+
+<h3>
+♅ Uranus at Opposition
+</h3>
+
+<p>
+
+Uranus reaches opposition and is around its brightest
+period of the year.
+
+</p>
+
+<span class="tag">
+PLANET
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PLANET VISIBILITY
+========================= -->
+
+<section id="visibility">
+
+<h2 class="section-title">
+    🔭 When & Where Can You See the Planets?
+</h2>
+
+<p class="section-subtitle">
+
+Find out when each planet is generally easiest to observe,
+where to look in the sky and what equipment you need.
+
+The information below uses India as the general reference
+region. Exact rise and set times vary by city and date.
+
+</p>
+
+
+<div class="visibility-intro">
+
+<p>
+
+<strong>Important:</strong> A planet does not stay in the same
+place in the sky every night. Earth and the other planets are
+constantly moving around the Sun.
+
+The easiest planets to observe are usually
+<strong>Venus, Jupiter, Mars and Saturn</strong>.
+
+The best observing opportunities for the outer planets often
+occur around <strong>opposition</strong>. For Mercury and Venus,
+the most useful events are their <strong>greatest elongations</strong>.
+
+</p>
+
+</div>
+
+
+<div class="search-box">
+
+<input
+    type="text"
+    id="visibilitySearch"
+    placeholder="🔎 Search a planet..."
+>
+
+</div>
+
+
+<div class="events-grid"
+     id="visibilityGrid">
+
+
+<!-- MERCURY -->
+
+<div class="event visibility-card"
+     data-planet="mercury">
+
+<div class="event-date">
+☿ MERCURY
+</div>
+
+<h3>
+When can you see Mercury?
+</h3>
+
+<p>
+
+Mercury is difficult to observe because it never moves very
+far from the Sun in Earth's sky.
+
+</p>
+
+<p>
+
+<strong>Morning visibility:</strong>
+Look low toward the eastern horizon shortly before sunrise.
+
+</p>
+
+<p>
+
+<strong>Evening visibility:</strong>
+Look low toward the western horizon shortly after sunset.
+
+</p>
+
+<p>
+
+<strong>Best opportunity:</strong>
+Around Mercury's greatest elongations.
+
+</p>
+
+<span class="tag">
+DIFFICULT
+</span>
+
+</div>
+
+
+<!-- VENUS -->
+
+<div class="event visibility-card"
+     data-planet="venus">
+
+<div class="event-date">
+♀ VENUS
+</div>
+
+<h3>
+When can you see Venus?
+</h3>
+
+<p>
+
+Venus is the brightest planet visible from Earth and is
+usually extremely easy to identify.
+
+</p>
+
+<p>
+
+<strong>Morning star:</strong>
+Look toward the eastern sky before sunrise.
+
+</p>
+
+<p>
+
+<strong>Evening star:</strong>
+Look toward the western sky after sunset.
+
+</p>
+
+<p>
+
+<strong>Appearance:</strong>
+Very bright white object that normally does not twinkle
+as strongly as stars.
+
+</p>
+
+<span class="tag">
+VERY EASY
+</span>
+
+</div>
+
+
+<!-- EARTH -->
+
+<div class="event visibility-card"
+     data-planet="earth">
+
+<div class="event-date">
+🌍 EARTH
+</div>
+
+<h3>
+Earth — Our Observation Platform
+</h3>
+
+<p>
+
+Earth itself cannot normally be viewed as a planet while
+standing on Earth's surface.
+
+Instead, Earth is the platform from which we observe the
+rest of the Solar System.
+
+</p>
+
+<span class="tag">
+OUR HOME
+</span>
+
+</div>
+
+
+<!-- MARS -->
+
+<div class="event visibility-card"
+     data-planet="mars">
+
+<div class="event-date">
+♂ MARS
+</div>
+
+<h3>
+When can you see Mars?
+</h3>
+
+<p>
+
+Mars is easiest to observe when it approaches opposition.
+At opposition, Earth lies approximately between the Sun and Mars.
+
+</p>
+
+<p>
+
+<strong>Where to look:</strong>
+Along the ecliptic, the general path followed by the Sun
+and planets across the sky.
+
+</p>
+
+<p>
+
+<strong>Appearance:</strong>
+A relatively bright reddish-orange point.
+
+</p>
+
+<span class="tag">
+EASY AROUND OPPOSITION
+</span>
+
+</div>
+
+
+<!-- JUPITER -->
+
+<div class="event visibility-card"
+     data-planet="jupiter">
+
+<div class="event-date">
+♃ JUPITER
+</div>
+
+<h3>
+When can you see Jupiter?
+</h3>
+
+<p>
+
+Jupiter is one of the easiest planets to see because it
+can become extremely bright.
+
+</p>
+
+<p>
+
+<strong>Where to look:</strong>
+Along the ecliptic.
+
+</p>
+
+<p>
+
+<strong>Best period:</strong>
+Around opposition, when Jupiter can remain visible for
+much of the night.
+
+</p>
+
+<p>
+
+<strong>Equipment:</strong>
+A small telescope can reveal the four large Galilean moons:
+Io, Europa, Ganymede and Callisto.
+
+</p>
+
+<span class="tag">
+VERY EASY
+</span>
+
+</div>
+
+
+<!-- SATURN -->
+
+<div class="event visibility-card"
+     data-planet="saturn">
+
+<div class="event-date">
+♄ SATURN
+</div>
+
+<h3>
+When can you see Saturn?
+</h3>
+
+<p>
+
+Saturn is best observed around opposition.
+
+</p>
+
+<p>
+
+<strong>Where to look:</strong>
+Along the ecliptic.
+
+</p>
+
+<p>
+
+<strong>Best feature:</strong>
+Its famous ring system can be seen using a telescope.
+
+</p>
+
+<p>
+
+During opposition, Saturn rises around sunset and remains
+visible for much of the night.
+
+</p>
+
+<span class="tag">
+EASY
+</span>
+
+</div>
+
+
+<!-- URANUS -->
+
+<div class="event visibility-card"
+     data-planet="uranus">
+
+<div class="event-date">
+♅ URANUS
+</div>
+
+<h3>
+When can you see Uranus?
+</h3>
+
+<p>
+
+Uranus is much fainter than Jupiter and Saturn.
+Under exceptionally dark skies it can potentially be
+detected without optical aid, but binoculars or a telescope
+make identification much easier.
+
+</p>
+
+<p>
+
+<strong>Best period:</strong>
+Around opposition.
+
+</p>
+
+<p>
+
+<strong>Where:</strong>
+Along the ecliptic near its position among the constellations.
+
+</p>
+
+<span class="tag">
+BINOCULARS RECOMMENDED
+</span>
+
+</div>
+
+
+<!-- NEPTUNE -->
+
+<div class="event visibility-card"
+     data-planet="neptune">
+
+<div class="event-date">
+♆ NEPTUNE
+</div>
+
+<h3>
+When can you see Neptune?
+</h3>
+
+<p>
+
+Neptune is extremely faint and cannot normally be seen
+with the unaided eye.
+
+</p>
+
+<p>
+
+<strong>Best period:</strong>
+Around opposition.
+
+</p>
+
+<p>
+
+<strong>Equipment:</strong>
+A telescope is required for practical observation.
+
+</p>
+
+<p>
+
+<strong>Where:</strong>
+Along the ecliptic in the region of the sky where Neptune
+is located at that time.
+
+</p>
+
+<span class="tag">
+TELESCOPE REQUIRED
+</span>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     MONTHLY GUIDE
+========================= -->
+
+<div class="visibility-table-container">
+
+<h3 style="
+font-size:30px;
+margin-bottom:20px;
+">
+
+📅 Planet Visibility Guide — 2026
+
+</h3>
+
+<table class="visibility-table">
+
+<thead>
+
+<tr>
+
+<th>Planet</th>
+<th>Jan</th>
+<th>Feb</th>
+<th>Mar</th>
+<th>Apr</th>
+<th>May</th>
+<th>Jun</th>
+<th>Jul</th>
+<th>Aug</th>
+<th>Sep</th>
+<th>Oct</th>
+<th>Nov</th>
+<th>Dec</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>☿ Mercury</td>
+
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+
+</tr>
+
+
+<tr>
+
+<td>♀ Venus</td>
+
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+<td class="evening">Evening</td>
+<td class="evening">Evening</td>
+<td class="evening">Evening</td>
+<td class="evening">Evening</td>
+<td class="evening">Evening</td>
+<td class="evening">Evening</td>
+<td class="evening">Evening</td>
+
+</tr>
+
+
+<tr>
+
+<td>♂ Mars</td>
+
+<td class="good">Excellent</td>
+<td class="good">Excellent</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+
+</tr>
+
+
+<tr>
+
+<td>♃ Jupiter</td>
+
+<td class="good">Excellent</td>
+<td class="good">Excellent</td>
+<td class="night">Evening/Night</td>
+<td class="night">Evening/Night</td>
+<td class="night">Evening</td>
+<td class="night">Evening</td>
+<td class="night">Evening</td>
+<td class="night">Evening</td>
+<td class="night">Evening</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+
+</tr>
+
+
+<tr>
+
+<td>♄ Saturn</td>
+
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="night">Evening</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="good">Excellent</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+
+</tr>
+
+
+<tr>
+
+<td>♅ Uranus</td>
+
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Evening</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="night">Evening</td>
+<td class="night">Night</td>
+<td class="good">Excellent</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+
+</tr>
+
+
+<tr>
+
+<td>♆ Neptune</td>
+
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="morning">Morning</td>
+<td class="evening">Evening</td>
+<td class="night">Night</td>
+<td class="good">Excellent</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+<td class="night">Night</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- =========================
+     OBSERVING TIPS
+========================= -->
+
+<div style="
+margin-top:50px;
+padding:35px;
+border-radius:25px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.1);
+">
+
+<h3 style="
+font-size:30px;
+margin-bottom:20px;
+">
+
+🌠 How to Find a Planet
+
+</h3>
+
+<p style="
+color:#b5bfd2;
+line-height:1.9;
+">
+
+<strong>1. Find the horizon:</strong>
+Choose a place with a clear view of the sky.
+
+<br><br>
+
+<strong>2. Avoid city lights:</strong>
+Dark locations make faint planets and stars easier to see.
+
+<br><br>
+
+<strong>3. Find the ecliptic:</strong>
+The Sun, Moon and planets appear close to an imaginary
+line across the sky called the ecliptic.
+
+<br><br>
+
+<strong>4. Look for steady objects:</strong>
+Planets generally twinkle much less than stars.
+
+<br><br>
+
+<strong>5. Use a sky map:</strong>
+A planetarium application can help identify the exact
+direction and altitude for your location.
+
+<br><br>
+
+<strong>6. Never look directly at the Sun:</strong>
+Viewing the Sun without proper certified solar viewing
+equipment can permanently damage your eyes.
+
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     MILKY WAY
+========================= -->
+
+<section id="milkyway">
+
+<h2 class="section-title">
+    🌌 Our Galaxy
+</h2>
+
+<p class="section-subtitle">
+
+The Solar System is only a tiny part of a much larger galaxy.
+
+</p>
+
+<div class="galaxy-box">
+
+<div class="galaxy-text">
+
+<h3>
+The Milky Way
+</h3>
+
+<p>
+
+The Milky Way is a barred spiral galaxy containing an enormous
+number of stars.
+
+Our Solar System is located in a smaller region of the galaxy
+called the <strong>Orion Arm</strong>, also known as the
+<strong>Orion Spur</strong>.
+
+The Solar System orbits the center of the Milky Way at hundreds
+of thousands of kilometres per hour and takes roughly
+<strong>230 million years</strong> to complete one orbit around
+the galactic center.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+<p>
+🌌 <strong>Cosmos Explorer</strong>
+</p>
+
+<br>
+
+<p>
+Science Project by <strong>Ankush & Abhigyan</strong>
+</p>
+
+<br>
+
+<p>
+Explore • Learn • Observe
+</p>
+
+<br>
+
+<p>
+Educational Astronomy Website • 2026
+</p>
+
+</footer>
+
+
+<!-- =========================
+     PLANET MODAL
+========================= -->
+
+<div class="modal" id="planetModal">
+
+<div class="modal-content">
+
+<span class="close"
+      onclick="closeModal()">
+×
+</span>
+
+<div id="modalContent"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   PLANET DATABASE
+========================= */
+
+const planets = {
+
+Sun: {
+
+description:
+"The Sun is the star at the center of our Solar System. It is a G-type main-sequence star and contains most of the mass of the Solar System. Energy generated by nuclear fusion in its core ultimately powers Earth's climate and ecosystems.",
+
+diameter:
+"≈ 1,392,700 km",
+
+distance:
+"Earth is approximately 149.6 million km from the Sun on average.",
+
+temperature:
+"Surface ≈ 5,500°C; core ≈ 15 million°C",
+
+day:
+"≈ 25 Earth days at the equator",
+
+year:
+"≈ 225–250 million Earth years for one orbit around the Milky Way",
+
+atmosphere:
+"Hydrogen, helium and ionized plasma",
+
+special:
+"The Sun produces energy through nuclear fusion, primarily converting hydrogen into helium."
+
+},
+
+Mercury: {
+
+description:
+"Mercury is the smallest planet in the Solar System and the closest planet to the Sun. Its surface contains enormous numbers of impact craters.",
+
+diameter:
+"4,880 km",
+
+distance:
+"Average orbital distance from Sun ≈ 58 million km",
+
+temperature:
+"Approximately −180°C to 430°C at the surface",
+
+day:
+"59 Earth days",
+
+year:
+"88 Earth days",
+
+atmosphere:
+"Extremely thin exosphere",
+
+special:
+"Mercury has almost no substantial atmosphere to distribute heat, producing extreme temperature differences."
+
+},
+
+Venus: {
+
+description:
+"Venus is a rocky planet similar in size to Earth but possesses a much denser atmosphere and an extremely powerful greenhouse effect.",
+
+diameter:
+"12,104 km",
+
+distance:
+"Average orbital distance from Sun ≈ 108 million km",
+
+temperature:
+"Average surface temperature ≈ 465°C",
+
+day:
+"243 Earth days",
+
+year:
+"225 Earth days",
+
+atmosphere:
+"Mostly carbon dioxide with nitrogen",
+
+special:
+"Venus rotates very slowly and in the opposite direction to most planets."
+
+},
+
+Earth: {
+
+description:
+"Earth is the third planet from the Sun and the only world currently known to support life. Liquid surface water covers most of the planet.",
+
+diameter:
+"12,756 km",
+
+distance:
+"Average distance from Sun ≈ 149.6 million km",
+
+temperature:
+"Global average surface temperature ≈ 15°C",
+
+day:
+"≈ 24 hours",
+
+year:
+"≈ 365.25 days",
+
+atmosphere:
+"≈ 78% nitrogen, ≈ 21% oxygen, plus other gases",
+
+special:
+"Earth has stable surface liquid water, a protective magnetic field and a complex biosphere."
+
+},
+
+Mars: {
+
+description:
+"Mars is a cold rocky planet famous for its reddish surface caused largely by iron minerals. Evidence shows that ancient Mars once had flowing surface water.",
+
+diameter:
+"6,792 km",
+
+distance:
+"Average orbital distance from Sun ≈ 227.9 million km",
+
+temperature:
+"Average ≈ −63°C",
+
+day:
+"24 hours 37 minutes",
+
+year:
+"687 Earth days",
+
+atmosphere:
+"Mostly carbon dioxide",
+
+special:
+"Mars contains Olympus Mons, one of the largest volcanoes known in the Solar System."
+
+},
+
+Jupiter: {
+
+description:
+"Jupiter is the largest planet in the Solar System. It is a gas giant primarily composed of hydrogen and helium.",
+
+diameter:
+"≈ 142,984 km",
+
+distance:
+"Average orbital distance from Sun ≈ 778 million km",
+
+temperature:
+"Cloud tops roughly −110°C",
+
+day:
+"≈ 10 hours",
+
+year:
+"≈ 11.86 Earth years",
+
+atmosphere:
+"Mostly hydrogen and helium",
+
+special:
+"The Great Red Spot is a gigantic storm system that has existed for centuries."
+
+},
+
+Saturn: {
+
+description:
+"Saturn is the second-largest planet and is famous for its spectacular rings, which are composed mainly of countless pieces of ice and rocky material.",
+
+diameter:
+"≈ 120,536 km",
+
+distance:
+"Average orbital distance from Sun ≈ 1.4 billion km",
+
+temperature:
+"Cloud tops roughly −140°C",
+
+day:
+"≈ 10.7 hours",
+
+year:
+"≈ 29.5 Earth years",
+
+atmosphere:
+"Mostly hydrogen and helium",
+
+special:
+"Saturn's ring system is extraordinarily extensive but extremely thin compared with its width."
+
+},
+
+Uranus: {
+
+description:
+"Uranus is an ice giant with a blue-green appearance caused largely by methane in its atmosphere.",
+
+diameter:
+"≈ 51,118 km",
+
+distance:
+"Average orbital distance from Sun ≈ 2.9 billion km",
+
+temperature:
+"Cloud temperatures around −195°C",
+
+day:
+"≈ 17 hours",
+
+year:
+"≈ 84 Earth years",
+
+atmosphere:
+"Hydrogen, helium and methane",
+
+special:
+"Uranus rotates with an axial tilt of about 98 degrees, essentially making it appear to rotate on its side."
+
+},
+
+Neptune: {
+
+description:
+"Neptune is the eighth and most distant major planet from the Sun. It is an ice giant with extremely powerful winds.",
+
+diameter:
+"≈ 49,528 km",
+
+distance:
+"Average orbital distance from Sun ≈ 4.5 billion km",
+
+temperature:
+"Cloud temperatures around −200°C",
+
+day:
+"≈ 16 hours",
+
+year:
+"≈ 165 Earth years",
+
+atmosphere:
+"Hydrogen, helium and methane",
+
+special:
+"Neptune experiences some of the fastest winds measured in the Solar System."
+
+}
+
+};
+
+
+/* =========================
+   OPEN PLANET
+========================= */
+
+function openPlanet(name) {
+
+const p = planets[name];
+
+if (!p) return;
+
+document.getElementById("modalContent").innerHTML = `
+
+<h2>${name}</h2>
+
+<p>
+${p.description}
+</p>
+
+<table class="info-table">
+
+<tr>
+<td>Diameter</td>
+<td>${p.diameter}</td>
+</tr>
+
+<tr>
+<td>Distance / Orbit</td>
+<td>${p.distance}</td>
+</tr>
+
+<tr>
+<td>Temperature</td>
+<td>${p.temperature}</td>
+</tr>
+
+<tr>
+<td>Length of Day</td>
+<td>${p.day}</td>
+</tr>
+
+<tr>
+<td>Length of Year</td>
+<td>${p.year}</td>
+</tr>
+
+<tr>
+<td>Atmosphere</td>
+<td>${p.atmosphere}</td>
+</tr>
+
+<tr>
+<td>Interesting Fact</td>
+<td>${p.special}</td>
+</tr>
+
+</table>
+
+`;
+
+document.getElementById("planetModal").style.display = "flex";
+
+}
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeModal() {
+
+document.getElementById("planetModal").style.display = "none";
+
+}
+
+
+/* =========================
+   CLOSE MODAL OUTSIDE
+========================= */
+
+document.getElementById("planetModal")
+.addEventListener("click", function(e) {
+
+if (e.target === this) {
+
+    closeModal();
+
+}
+
+});
+
+
+/* =========================
+   PLANET SEARCH
+========================= */
+
+document.getElementById("search")
+.addEventListener("input", function() {
+
+const query = this.value.toLowerCase();
+
+document.querySelectorAll(".card")
+.forEach(card => {
+
+const name = card.dataset.name;
+
+if (name.includes(query)) {
+
+    card.style.display = "";
+
+} else {
+
+    card.style.display = "none";
+
+}
+
+});
+
+});
+
+
+/* =========================
+   VISIBILITY SEARCH
+========================= */
+
+document.getElementById("visibilitySearch")
+.addEventListener("input", function() {
+
+const query = this.value.toLowerCase();
+
+document.querySelectorAll(".visibility-card")
+.forEach(card => {
+
+const planet = card.dataset.planet;
+
+if (planet.includes(query)) {
+
+    card.style.display = "";
+
+} else {
+
+    card.style.display = "none";
+
+}
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
